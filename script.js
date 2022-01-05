@@ -1,57 +1,41 @@
-//Variáveis
+//Variáveis vindas do html
 let img = document.getElementById("img");
 let obs = document.getElementById("obs");
-let btnVermelho = document.getElementById("btnVermelho");
-let btnAmarelo = document.getElementById("btnAmarelo");
-let btnVerde = document.getElementById("btnVerde");
-let btnAutomatico = document.getElementById("btnAutomatico");
-let btnDesligar = document.getElementById("btnDesligar");
 let containerBtns = document.getElementById("containerBtns");
+let indexDaCor = 0;
+intervaloId = null;
 
-//Funções
-let descobrirBtn = (event) => {
-  switch (event.target.id) {
-    case "btnVermelho":
-      ligarVermelho();
-      break;
-    case "btnAmarelo":
-      ligarAmarelo();
-      break;
-    case "btnVerde":
-      ligarVerde();
-      case "btnAutomatico":
-            automatico();
-            break;
-      break;
-    case "btnDesligar":
-      desligar();
-      break;
-    default:
-      break;
-  }
+//variáveis com funções
+let proximaCor = () => {
+    indexDaCor = indexDaCor < 2 ? ++indexDaCor : 0;
+    
 };
 
-function ligarVermelho() {
-  return (img.src = "./imagens/vermelho.png");
-}
-function ligarAmarelo() {
-  return (img.src = "./imagens/amarelo.png");
-}
-function ligarVerde() {
-  return (img.src = "./imagens/verde.png");
-}
-function automatico() {
-  
-  
-}
-function desligar() {
-  return (img.src = "./imagens/desligado.png");
+let mudarCorAutomatico = () => {
+    let TodasAsCores = ["btnVerde","btnAmarelo","btnVermelho" ];
+    let corDaVez = TodasAsCores[indexDaCor];
+    acaoBtn[corDaVez]();
+    proximaCor();
+    
+};
+
+let pararAutomatico = () => {
+    clearInterval(intervaloId)
+    // console.log(pararAutomatico());
 }
 
-//Ações dos botões
-// btnVermelho.addEventListener('click',ligarVermelho);
-// btnAmarelo.addEventListener('click',ligarAmarelo);
-// btnVerde.addEventListener('click',ligarVerde);
-// btnAutomatico.addEventListener('click',automatico);
-// btnDesligar.addEventListener('click',desligar);
+let descobrirBtn = (eventoClique) => {
+    pararAutomatico()
+  acaoBtn[eventoClique.target.id]();
+};
+//objetos com funções dentro
+let acaoBtn = {
+  btnVermelho: () => (img.src = "./imagens/vermelho.png"),
+  btnAmarelo: () => (img.src = "./imagens/amarelo.png"),
+  btnVerde: () => (img.src = "./imagens/verde.png"),
+  btnDesligar: () => (img.src = "./imagens/desligado.png"),
+  btnAutomatico: () => intervaloId = setInterval(mudarCorAutomatico, 1000),
+};
+
+//eventos de clique
 containerBtns.addEventListener("click", descobrirBtn);
